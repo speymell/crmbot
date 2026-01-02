@@ -15,6 +15,7 @@ async def get_or_create_user(session: AsyncSession, telegram_id: int, name: str)
     user = User(
         telegram_id=telegram_id,
         name=name,
+        is_admin=False,
     )
 
     session.add(user)
