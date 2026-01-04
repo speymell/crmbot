@@ -1,3 +1,4 @@
+# db/models/users.py
 from __future__ import annotations
 
 from datetime import datetime
@@ -18,7 +19,8 @@ from sqlalchemy.sql import func
 from db.base import Base
 
 if TYPE_CHECKING:
-    from db.models.business import Business
+    from db.models.businesses import Business
+    from db.models.masters import Master
 
 
 class User(Base):
@@ -74,3 +76,8 @@ class User(Base):
     )
 
     business: Mapped["Business"] = relationship(back_populates="users")
+
+    master_profile: Mapped["Master | None"] = relationship(
+        back_populates="user",
+        uselist=False,
+    )

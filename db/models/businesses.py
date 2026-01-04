@@ -1,3 +1,4 @@
+# db/models/businesses.py
 from __future__ import annotations
 
 from datetime import datetime
@@ -10,7 +11,9 @@ from sqlalchemy.sql import func
 from db.base import Base
 
 if TYPE_CHECKING:
-    from db.models.user import User
+    from db.models.users import User
+    from db.models.masters import Master
+    from db.models.clients import Client
 
 
 class Business(Base):
@@ -48,6 +51,18 @@ class Business(Base):
     )
 
     users: Mapped[list["User"]] = relationship(
+        back_populates="business",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    masters: Mapped[list["Master"]] = relationship(
+        back_populates="business",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    clients: Mapped[list["Client"]] = relationship(
         back_populates="business",
         cascade="all, delete-orphan",
         passive_deletes=True,
