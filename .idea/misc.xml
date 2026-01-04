@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.13 (CrmБот)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (CrmБот)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (crmbot)" project-jdk-type="Python SDK" />
 </project>
