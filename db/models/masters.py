@@ -21,6 +21,7 @@ from db.base import Base
 if TYPE_CHECKING:
     from db.models.businesses import Business
     from db.models.users import User
+    from db.models.master_services import MasterServices
 
 
 class Master(Base):
@@ -70,3 +71,9 @@ class Master(Base):
 
     business: Mapped["Business"] = relationship(back_populates="masters")
     user: Mapped["User | None"] = relationship(back_populates="master_profile")
+
+    master_services: Mapped[list["MasterServices"]] = relationship(
+        back_populates="masters",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )

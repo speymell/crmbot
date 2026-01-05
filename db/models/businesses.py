@@ -14,6 +14,9 @@ if TYPE_CHECKING:
     from db.models.users import User
     from db.models.masters import Master
     from db.models.clients import Client
+    from db.models.service_categories import ServiceCategories
+    from db.models.services import Services
+    from db.models.master_services import MasterServices
 
 
 class Business(Base):
@@ -30,7 +33,7 @@ class Business(Base):
     timezone: Mapped[str] = mapped_column(
         String(64),
         nullable=False,
-        server_default=text("'Europe/Berlin'"),
+        server_default=text("'Europe/Moscow'"),
     )
     currency: Mapped[str] = mapped_column(
         String(3),
@@ -63,6 +66,24 @@ class Business(Base):
     )
 
     clients: Mapped[list["Client"]] = relationship(
+        back_populates="business",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    service_categories: Mapped[list["ServiceCategories"]] = relationship(
+        back_populates="business",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    services: Mapped[list["Services"]] = relationship(
+        back_populates="business",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    master_services: Mapped[list["MasterServices"]] = relationship(
         back_populates="business",
         cascade="all, delete-orphan",
         passive_deletes=True,
