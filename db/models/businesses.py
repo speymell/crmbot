@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from db.models.service_categories import ServiceCategories
     from db.models.services import Services
     from db.models.master_services import MasterServices
+    from db.models.master_working_hours import MasterWorkingHours
 
 
 class Business(Base):
@@ -84,6 +85,12 @@ class Business(Base):
     )
 
     master_services: Mapped[list["MasterServices"]] = relationship(
+        back_populates="business",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    master_working_hours: Mapped[list["MasterWorkingHours"]] = relationship(
         back_populates="business",
         cascade="all, delete-orphan",
         passive_deletes=True,

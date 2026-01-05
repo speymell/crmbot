@@ -51,7 +51,7 @@ class Master(Base):
     display_name: Mapped[str] = mapped_column(String(255), nullable=False)
     bio: Mapped[str | None] = mapped_column(String(1000), nullable=True)
 
-    is_bookable: Mapped[bool] = mapped_column(
+    is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
         server_default=text("true"),
@@ -77,3 +77,10 @@ class Master(Base):
         cascade="all, delete-orphan",
         passive_deletes=True,
     )
+
+    master_working_hours: Mapped[list["MasterWorkingHours"]] = relationship(
+        back_populates="masters",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
