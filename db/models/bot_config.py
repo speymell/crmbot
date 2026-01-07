@@ -25,6 +25,7 @@ class BotConfig(Base):
         BigInteger, ForeignKey("businesses.id", ondelete="CASCADE"), nullable=False, index=True
     )
 
+    bot_token: Mapped[str | None] = mapped_column(String(255), nullable=True)
     bot_token_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     bot_username: Mapped[str | None] = mapped_column(String(255), nullable=True)
 

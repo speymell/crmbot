@@ -3,9 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from db.models.client import Client
 
 
-async def get_or_create_client(session: AsyncSession, telegram_id: int, name: str):
+async def get_or_create_client(session: AsyncSession, telegram_id: int, name: str, business_id: int = 1):
     result = await session.execute(
-        select(Client).where(Client.tg_user_id == telegram_id)
+        select(Client).where(Client.business_id == business_id, Client.tg_user_id == telegram_id)
     )
     client = result.scalar_one_or_none()
 
@@ -15,7 +15,7 @@ async def get_or_create_client(session: AsyncSession, telegram_id: int, name: st
     client = Client(
         tg_user_id=telegram_id,
         username=name,
-        business_id=1  # временно жестко задаем бизнес_id = 1
+        business_id=business_id  # временно жестко задаем бизнес_id = 1
     )
 
     session.add(client)

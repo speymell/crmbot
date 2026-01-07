@@ -19,6 +19,12 @@ from db.models.scheduled_notification import ScheduledNotification
 from db.models.finance_category import FinanceCategory
 from db.models.transaction import Transaction
 
+from db.models.chat_thread import ChatThread
+from db.models.chat_message import ChatMessage
+
+from db.models.business_modules import BusinessModules
+from db.models.user_permission import UserPermission
+
 from db.models.portfolio_album import PortfolioAlbum
 from db.models.portfolio_image import PortfolioImage
 
@@ -41,8 +47,12 @@ __all__ = [
     "ScheduledNotification",
     "FinanceCategory",
     "Transaction",
+    "ChatThread",
+    "ChatMessage",
     "PortfolioAlbum",
     "PortfolioImage",
     "BusinessSetting",
     "BotConfig",
+    "BusinessModules",
+    "UserPermission",
 ]
