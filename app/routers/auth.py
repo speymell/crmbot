@@ -8,7 +8,7 @@ from app.security import create_access_token, hash_password, verify_password
 from db.models.business import Business
 from db.models.user import User
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 @router.post("/register", response_model=TokenResponse)

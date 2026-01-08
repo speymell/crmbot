@@ -2,6 +2,7 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from aiogram import Dispatcher
+from aiogram.fsm.storage.memory import MemoryStorage
 
 from app.bot_manager import BotManager
 from app.config import settings
@@ -16,18 +17,20 @@ def create_app() -> FastAPI:
 
     fastapi_app = FastAPI(title="BotCRM")
 
+    # Load CORS origins from settings
+    cors_origins = settings.get_cors_origins_list()
+    
     fastapi_app.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            "http://localhost:5173",
-            "http://127.0.0.1:5173",
-        ],
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
-    dp = Dispatcher()
+    # Create dispatcher with FSM storage
+    storage = MemoryStorage()
+    dp = Dispatcher(storage=storage)
     for r in all_routers:
         dp.include_router(r)
 

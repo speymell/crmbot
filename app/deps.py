@@ -119,6 +119,44 @@ async def _effective_permission_value(*, session: AsyncSession, user: User, perm
     return allowed
 
 
+async def get_optional_business_id(
+    session: AsyncSession = Depends(get_session),
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+) -> int | None:
+    """
+    Optional authentication dependency that returns business_id if valid token provided,
+    None otherwise. Does not raise 401 errors for missing or invalid credentials.
+    """
+    if not credentials:
+        return None
+
+    token = credentials.credentials
+
+    try:
+        payload = decode_access_token(token)
+    except PyJWTError:
+        return None
+
+    user_id_raw = payload.get("sub")
+    business_id = payload.get("business_id")
+
+    if not user_id_raw or not business_id:
+        return None
+
+    user_id = int(user_id_raw)
+
+    result = await session.execute(
+        select(User).where(User.id == user_id, User.business_id == business_id, User.is_active.is_(True))
+    )
+    user = result.scalar_one_or_none()
+    if not user:
+        return None
+
+    business_id_int = int(business_id)
+    set_business_id(business_id_int)
+    return business_id_int
+
+
 def require_permission(permission: str):
     async def _dep(
         current_user: User = Depends(get_current_user),
